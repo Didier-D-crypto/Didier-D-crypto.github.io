@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link rel="stylesheet" href="style.css">
+  <title>New York Times Search</title>
+</head>
+<body>
+  <header>
+    <div class="jumbotron bg-primary text-center mr-3 ml-3">
+      <h1 class="display-4 font-weight-bold color-#fff">New York Times Search</h1>
+    </div>
+  </header>
+  <form>
+    <div class="row mr-3 ml-3">
+      <div class="col-md-12">
+        <div class="form-group font-weight-bold">
+          <label for="exampleFormControlInput1">Search Term:</label>
+          <input type="email" class="form-control" id="queryValue">
+        </div>
+        <div class="form-group">
+          <label for="exampleFormControlSelect1">Number of Record to Retrieve:</label>
+          <select class="form-control" id="exampleFormControlSelect1">
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="exampleFormControlInput1">Start Year (Optional):</label>
+          <input type="email" class="form-control" id="exampleFormControlInput1">
+        </div>
+        <div class="form-group">
+          <label for="exampleFormControlInput1">End Year (Optional):</label>
+          <input type="email" class="form-control" id="exampleFormControlInput1">
+        </div>
+      </div>
+      <div>
+        <button type="button" class="btn btn-primary btn-sm mr-3 ml-3" id="search">Search</button>
+        <button type="button" class="btn btn-secondary btn-sm mr-3 ml-3">Clear Results</button>
+      </div>
+    </div>
+  </form>
+  <br>
+  <div class="card mr-3 ml-3">
+    <div class="card-header font-weight-bold">
+      Top Articles
+    </div>
+    <div class="card-body">
+      <ul id="articleList">
+      </ul>
+      <!-- <a href="url">link text</a> -->
+      <!-- <h5 class="card-title">Special title treatment</h5>
+                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p> -->
+    </div>
+  </div>
+  <script src="nytScript.js"></script>
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
+
+
+
+
+
+//Javascript Below//
+
+$(document).ready(function () {
+    $("#search").on("click", function () {
+      var query = $("#queryValue").val();
+      var key = "H4xJcaB6EHUAahPgX7T1Yg7zZyrJ4luB";
+      var queryURL = "https://api.nytimes.com/svc/search/v2/articlesearch.json?q=" + query + "&api-key=" + key;
+      $.ajax({
+        url: queryURL,
+        method: "GET"
+      })
+        .then(function (response) {
+          var articleArray = response.response.docs;
+          for (var i = 0; i < articleArray.length; i++) {
+            var article = $('<li>');
+            var articleLink = $('<a>');
+            var url = articleArray[i].web_url;
+            articleLink.attr("href", url);
+            articleLink.attr("target", "_blank");
+            var headline = articleArray[i].headline.main;
+            articleLink.text(headline);
+            article.append(articleLink)
+            $('#articleList').append(article);
+          }
+        });
+    });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+Message Adrian Romero, Max Kulicke, Nicholas McConnell, Didier Delphin
+
+
